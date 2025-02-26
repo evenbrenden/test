@@ -1,5 +1,6 @@
 { pkgs, ... }:
 
+# TODO /usr/bin/env: ‘bash’: No such file or directory
 {
   services = {
     # https://github.com/nix-community/home-manager/pull/6534
