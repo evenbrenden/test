@@ -34,6 +34,7 @@
     ./git.nix
     ./i3/i3.nix
     ./mimeapps.nix
+    ./screen-locking.nix
     sops-nix
     ./ssh.nix
     ./studio/studio.nix
