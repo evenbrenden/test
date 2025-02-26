@@ -1,6 +1,5 @@
 { pkgs, ... }:
 
-# TODO /usr/bin/env: ‘bash’: No such file or directory
 {
   services = {
     # https://github.com/nix-community/home-manager/pull/6534
@@ -8,12 +7,13 @@
       enable = true;
       # https://github.com/google/xsecurelock/issues/186
       # https://github.com/google/xsecurelock/issues/182
-      lockCmd = ''
-        ${pkgs.lib.getExe' pkgs.coreutils "env"} \
-        XSECURELOCK_DISCARD_FIRST_KEYPRESS=0 \
-        XSECURELOCK_KEY_XF86Display_COMMAND='${pkgs.autorandr}/bin/autorandr --force --change clone-largest' \
-        XSECURELOCK_KEY_F7_COMMAND='${pkgs.autorandr}/bin/autorandr --force --change clone-largest' \
-        ${pkgs.xsecurelock}/bin/xsecurelock
+      lockCmd = let refresh-display = "${pkgs.autorandr}/bin/autorandr --force --change clone-largest";
+      in ''
+        ${pkgs.lib.getExe pkgs.bash} -c '\
+          XSECURELOCK_DISCARD_FIRST_KEYPRESS=0 \
+          XSECURELOCK_KEY_XF86Display_COMMAND=\'${refresh-display}\' \
+          XSECURELOCK_KEY_F7_COMMAND=\'${refresh-display}\' \
+          ${pkgs.xsecurelock}/bin/xsecurelock'
       '';
       xss-lock.extraOptions = [ "--transfer-sleep-lock" ];
     };
