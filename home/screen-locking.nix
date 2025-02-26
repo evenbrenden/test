@@ -5,6 +5,8 @@
     # https://github.com/nix-community/home-manager/pull/6534
     screen-locker = {
       enable = true;
+      # https://github.com/google/xsecurelock/issues/186
+      # https://github.com/google/xsecurelock/issues/182
       lockCmd = ''
         ${pkgs.lib.getExe' pkgs.coreutils "env"} \
         XSECURELOCK_DISCARD_FIRST_KEYPRESS=0 \
