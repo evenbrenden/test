@@ -46,21 +46,6 @@
   # Misc
   environment.pathsToLink = [ "/share/ir" "/share/midi" "/share/sfz" "/share/soundfonts" ];
   networking.firewall.enable = true;
-
-  # This can be moved to home-manager
-  nix = {
-    package = pkgs.nixVersions.stable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-    # Binary cache for haskell.nix
-    settings = {
-      trusted-public-keys = [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
-      substituters = [ "https://cache.iog.io" ];
-    };
-  };
-  nixpkgs.config.allowUnfree = true;
-
   time.timeZone = "Europe/Amsterdam";
   users.users.root.initialHashedPassword =
     "$6$v.fIgZCsq1yKDoVm$LZqzWgHJk9BmP3tmOhyVPsVbMhQzzAEOluMe6cV37YvYEPZwU0yIiH1i9lG1L9f68CyY9TXMfzfHV81X80RGR1";

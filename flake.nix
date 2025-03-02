@@ -19,11 +19,26 @@
     let
       nix-config-module = {
         nix = {
+          extraOptions = ''
+            experimental-features = nix-command flakes
+          '';
           nixPath = [ "nixpkgs=${nixpkgs-stable}" "unstable=${nixpkgs-unstable}" ];
           registry = {
             # nixpkgs.flake = nixpkgs-stable; is already set
             unstable.flake = nixpkgs-unstable;
           };
+          # haskell.nix
+          settings = {
+            trusted-public-keys = [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
+            substituters = [ "https://cache.iog.io" ];
+          };
+        };
+        imports = [ ({ pkgs, ... }: { nix.package = pkgs.nixVersions.stable; }) ];
+      };
+      nixpkgs-config-module = {
+        nixpkgs.config = {
+          allowUnfree = true;
+          pulseaudio = true; # Explicit PulseAudio support in applications
         };
       };
       nixpkgs-overlays-module = {
@@ -51,8 +66,13 @@
         extraSpecialArgs = { sops-nix = sops-nix.homeManagerModules.sops; };
         backupFileExtension = "backup";
       };
-      common-modules =
-        [ nix-config-module nixpkgs-overlays-module home-manager.nixosModules.home-manager home-manager-config-module ];
+      common-modules = [
+        nix-config-module
+        nixpkgs-config-module
+        nixpkgs-overlays-module
+        home-manager.nixosModules.home-manager
+        home-manager-config-module
+      ];
       system = "x86_64-linux";
     in {
       nixosConfigurations = {
